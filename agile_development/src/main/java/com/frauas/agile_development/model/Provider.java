@@ -1,8 +1,19 @@
 package com.frauas.agile_development.model;
 
 import java.util.List;
+import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "Provide_Table")
 public class Provider {
+	
+	private Integer providerId;
+	private String providerName;
 	
 	private List<Domain> domains;
 	
@@ -15,17 +26,40 @@ public class Provider {
 	}
 
 
-	public Provider(List<Domain> domains, String experienceLevel, String technologyLevel, Float price) {
+	public Provider(Integer providerId, String providerName, List<Domain> domains, String experienceLevel, String technologyLevel, Float price) {
 		super();
+		this.providerId = providerId;
+		this.providerName = providerName;
 		this.domains = domains;
 		this.experienceLevel = experienceLevel;
 		this.technologyLevel = technologyLevel;
 		this.price = price;
 	}
 
+	
+
+	public Integer getProviderId() {
+		return providerId;
+	}
+
+
+	public void setProviderId(Integer providerId) {
+		this.providerId = providerId;
+	}
+
 
 	public List<Domain> getDomains() {
 		return domains;
+	}
+
+
+	public String getProviderName() {
+		return providerName;
+	}
+
+
+	public void setProviderName(String providerName) {
+		this.providerName = providerName;
 	}
 
 
@@ -65,10 +99,36 @@ public class Provider {
 
 
 	@Override
-	public String toString() {
-		return "Provider [domains=" + domains + ", experienceLevel=" + experienceLevel + ", technologyLevel="
-				+ technologyLevel + ", price=" + price + "]";
+	public int hashCode() {
+		return Objects.hash(domains, experienceLevel, price, providerId, providerName, technologyLevel);
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Provider other = (Provider) obj;
+		return Objects.equals(domains, other.domains) && Objects.equals(experienceLevel, other.experienceLevel)
+				&& Objects.equals(price, other.price) && Objects.equals(providerId, other.providerId)
+				&& Objects.equals(providerName, other.providerName)
+				&& Objects.equals(technologyLevel, other.technologyLevel);
+	}
+
+
+	@Override
+	public String toString() {
+		return "Provider [providerId=" + providerId + ", providerName=" + providerName + ", domains=" + domains
+				+ ", experienceLevel=" + experienceLevel + ", technologyLevel=" + technologyLevel + ", price=" + price
+				+ "]";
+	}
+
+
+		
 	
 	
 
