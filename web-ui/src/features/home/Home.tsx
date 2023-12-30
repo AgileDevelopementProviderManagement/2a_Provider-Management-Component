@@ -11,6 +11,7 @@ import { Fragment, FunctionComponent } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import HandymanIcon from "@mui/icons-material/Handyman";
+import GavelIcon from '@mui/icons-material/Gavel';
 
 const Home: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -66,6 +67,27 @@ const Home: FunctionComponent = () => {
             <CardContent>
               <Typography gutterBottom variant="h5" component="div" textAlign="center">
                 Providers
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+        <Card sx={{ width: 345 }}>
+          <CardActionArea onClick={() => handleCardClick("/offers")}>
+            <CardMedia
+              component="div"
+              sx={{
+                height: 140,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: 100,
+              }}
+            >
+              <GavelIcon fontSize={"inherit"} />
+            </CardMedia>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div" textAlign="center">
+                Offers
               </Typography>
             </CardContent>
           </CardActionArea>
