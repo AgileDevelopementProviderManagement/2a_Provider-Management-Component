@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -11,75 +12,179 @@ import {
   Typography,
 } from "@mui/material";
 import { ChangeEvent, FunctionComponent, useState } from "react";
+import { Domain, MasterAgreementType } from "./types";
+import AddIcon from '@mui/icons-material/Add';
 
 interface Column {
-  id: "name" | "code" | "population" | "size" | "density";
+  id: string;
   label: string;
   minWidth?: number;
   align?: "right";
-  format?: (value: number) => string;
+  format?: (value: any) => string;
 }
 
 const columns: readonly Column[] = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
+  { id: "masterAgreementTypeId", label: "ID", minWidth: 50 },
+  { id: "masterAgreementTypeName", label: "Agreement Name", minWidth: 170 },
   {
-    id: "population",
-    label: "Population",
+    id: "validFrom",
+    label: "Valid From",
     minWidth: 170,
     align: "right",
-    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
-    id: "size",
-    label: "Size\u00a0(km\u00b2)",
+    id: "validUntil",
+    label: "Valid Until",
     minWidth: 170,
     align: "right",
-    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
-    id: "density",
-    label: "Density",
+    id: "dailyrateIndicator",
+    label: "Daily Rate Indicator",
     minWidth: 170,
     align: "right",
-    format: (value: number) => value.toFixed(2),
+  },
+  {
+    id: "deadline",
+    label: "Deadline",
+    minWidth: 120,
+    align: "right",
+  },
+  {
+    id: "teamdeadline",
+    label: "Team Deadline",
+    minWidth: 170,
+    align: "right",
+  },
+  {
+    id: "workscontractdeadline",
+    label: "Contract Deadline",
+    minWidth: 170,
+    align: "right",
+  },
+  {
+    id: "domains",
+    label: "Domains",
+    minWidth: 170,
+    align: "right",
+    format: (domains: Domain[]) =>
+      domains
+        ?.map((domain) => domain.domainId + "-" + domain.domainName)
+        .join(","),
   },
 ];
 
-interface Data {
-  name: string;
-  code: string;
-  population: number;
-  size: number;
-  density: number;
-}
-
-function createData(
-  name: string,
-  code: string,
-  population: number,
-  size: number
-): Data {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
-
-const rows = [
-  createData("India", "IN", 1324171354, 3287263),
-  createData("China", "CN", 1403500365, 9596961),
-  createData("Italy", "IT", 60483973, 301340),
-  createData("United States", "US", 327167434, 9833520),
-  createData("Canada", "CA", 37602103, 9984670),
-  createData("Australia", "AU", 25475400, 7692024),
-  createData("Germany", "DE", 83019200, 357578),
-  createData("Ireland", "IE", 4857000, 70273),
-  createData("Mexico", "MX", 126577691, 1972550),
-  createData("Japan", "JP", 126317000, 377973),
-  createData("France", "FR", 67022000, 640679),
-  createData("United Kingdom", "GB", 67545757, 242495),
-  createData("Russia", "RU", 146793744, 17098246),
-  createData("Nigeria", "NG", 200962417, 923768),
-  createData("Brazil", "BR", 210147125, 8515767),
+const rows: MasterAgreementType[] = [
+  {
+    masterAgreementTypeId: "5",
+    masterAgreementTypeName: "Chevrolet",
+    validFrom: "1/10/2023",
+    validUntil: "8/17/2023",
+    dailyrateIndicator: "44",
+    deadline: "8/21/2023",
+    teamdeadline: "12/22/2023",
+    workscontractdeadline: "8/2/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "2",
+    masterAgreementTypeName: "Saturn",
+    validFrom: "10/30/2023",
+    validUntil: "5/22/2023",
+    dailyrateIndicator: "95",
+    deadline: "3/8/2023",
+    teamdeadline: "7/6/2023",
+    workscontractdeadline: "6/7/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "3",
+    masterAgreementTypeName: "Ford",
+    validFrom: "2/17/2023",
+    validUntil: "6/27/2023",
+    dailyrateIndicator: "74",
+    deadline: "9/26/2023",
+    teamdeadline: "3/20/2023",
+    workscontractdeadline: "9/20/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "4",
+    masterAgreementTypeName: "Chevrolet",
+    validFrom: "2/28/2023",
+    validUntil: "2/21/2023",
+    dailyrateIndicator: "1",
+    deadline: "4/7/2023",
+    teamdeadline: "8/11/2023",
+    workscontractdeadline: "12/6/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "5",
+    masterAgreementTypeName: "Mitsubishi",
+    validFrom: "3/8/2023",
+    validUntil: "9/14/2023",
+    dailyrateIndicator: "85",
+    deadline: "1/28/2023",
+    teamdeadline: "8/3/2023",
+    workscontractdeadline: "3/29/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "6",
+    masterAgreementTypeName: "Saab",
+    validFrom: "11/10/2023",
+    validUntil: "2/2/2023",
+    dailyrateIndicator: "15",
+    deadline: "6/5/2023",
+    teamdeadline: "11/17/2023",
+    workscontractdeadline: "8/9/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "7",
+    masterAgreementTypeName: "Nissan",
+    validFrom: "6/12/2023",
+    validUntil: "2/22/2023",
+    dailyrateIndicator: "77",
+    deadline: "5/7/2023",
+    teamdeadline: "6/7/2023",
+    workscontractdeadline: "10/14/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "8",
+    masterAgreementTypeName: "Oldsmobile",
+    validFrom: "4/4/2023",
+    validUntil: "9/26/2023",
+    dailyrateIndicator: "21",
+    deadline: "5/9/2023",
+    teamdeadline: "9/22/2023",
+    workscontractdeadline: "3/7/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "9",
+    masterAgreementTypeName: "Toyota",
+    validFrom: "12/25/2023",
+    validUntil: "9/17/2023",
+    dailyrateIndicator: "95",
+    deadline: "11/24/2023",
+    teamdeadline: "7/1/2023",
+    workscontractdeadline: "12/5/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
+  {
+    masterAgreementTypeId: "10",
+    masterAgreementTypeName: "Hyundai",
+    validFrom: "10/29/2023",
+    validUntil: "4/14/2023",
+    dailyrateIndicator: "41",
+    deadline: "5/6/2023",
+    teamdeadline: "9/16/2023",
+    workscontractdeadline: "1/20/2023",
+    domains: [{ domainId: "23", domainName: "D1" }],
+  },
 ];
 
 const MasterAgreement: FunctionComponent = () => {
@@ -97,9 +202,14 @@ const MasterAgreement: FunctionComponent = () => {
 
   return (
     <Box p={2}>
-      <Typography variant="h4" component="div" mb={2}>
-        Master Agreements
-      </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h4" component="div" mb={2}>
+          Master Agreements
+        </Typography>
+        <Button variant="contained" startIcon={<AddIcon />}>
+          Create Master Agreement
+        </Button>
+      </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -125,15 +235,13 @@ const MasterAgreement: FunctionComponent = () => {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.code}
+                      key={row.masterAgreementTypeId}
                     >
                       {columns.map((column) => {
-                        const value = row[column.id];
+                        const value = (row as any)[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
+                            {column.format ? column.format(value) : value}
                           </TableCell>
                         );
                       })}
