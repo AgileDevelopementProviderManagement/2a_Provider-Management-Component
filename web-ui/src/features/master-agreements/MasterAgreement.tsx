@@ -1,7 +1,15 @@
 import {
+  AppBar,
   Box,
   Button,
+  Dialog,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
   Paper,
+  Slide,
   Table,
   TableBody,
   TableCell,
@@ -9,11 +17,15 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Toolbar,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, FunctionComponent, useState } from "react";
-import { Domain, MasterAgreementType } from "./types";
-import AddIcon from '@mui/icons-material/Add';
+import { ChangeEvent, FunctionComponent, forwardRef, useState } from "react";
+import { MasterAgreementType } from "./types";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import { Domain } from "../../types";
+import { TransitionProps } from "@mui/material/transitions";
 
 interface Column {
   id: string;
@@ -76,7 +88,7 @@ const columns: readonly Column[] = [
 
 const rows: MasterAgreementType[] = [
   {
-    masterAgreementTypeId: "5",
+    masterAgreementTypeId: "1",
     masterAgreementTypeName: "Chevrolet",
     validFrom: "1/10/2023",
     validUntil: "8/17/2023",
@@ -187,9 +199,28 @@ const rows: MasterAgreementType[] = [
   },
 ];
 
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const MasterAgreement: FunctionComponent = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -202,11 +233,20 @@ const MasterAgreement: FunctionComponent = () => {
 
   return (
     <Box p={2}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
         <Typography variant="h4" component="div" mb={2}>
           Master Agreements
         </Typography>
-        <Button variant="contained" startIcon={<AddIcon />}>
+        <Button
+          variant="contained"
+          onClick={handleClickOpen}
+          startIcon={<AddIcon />}
+        >
           Create Master Agreement
         </Button>
       </Box>
@@ -261,6 +301,33 @@ const MasterAgreement: FunctionComponent = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: "relative" }}>
+          <Toolbar>
+            <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+              Create master agreement
+            </Typography>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Box sx={{backgroundColor: "inherit", width: "100%", overflow: "hidden" , padding: 8}}>
+          <Paper sx={{width: "100%", overflow: "hidden",  padding: 1}}>
+            This is a form
+          </Paper>
+        </Box>  
+      </Dialog>
     </Box>
   );
 };

@@ -1,7 +1,4 @@
-export type Domain = {
-  domainId: string;
-  domainName: string;
-};
+import { Domain } from "../../types";
 
 export type MasterAgreementType = {
   masterAgreementTypeId: string;
