@@ -1,11 +1,17 @@
 package com.frauas.agile_development.model;
 
+import jakarta.persistence.*;
+
+import lombok.Data;
+import java.io.Serializable;
 import java.util.List;
 
-
-public class MasterAgreementType {
-
-	private String masterAgreementTypeId;
+@Entity
+@Table(name = "Master_Table")
+public class MasterAgreementType  {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer masterAgreementTypeId;
 
 	private String masterAgreementTypeName;
 
@@ -17,15 +23,19 @@ public class MasterAgreementType {
 	private String teamdeadline;
 	private String workscontractdeadline;
 
+	//@Column(columnDefinition="JSON")
+	//@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
+	//@JoinColumn(name = "master_agreement_id", referencedColumnName = "masterAgreementTypeId")
 	private List<Domain> domains;
 
 	public MasterAgreementType() {
 	}
 
-	public MasterAgreementType(String masterAgreementTypeId, String masterAgreementTypeName, String validFrom,
+	public MasterAgreementType(int masterAgreementTypeId, String masterAgreementTypeName, String validFrom,
 			String validUntil, String dailyrateIndicator, String deadline, String teamdeadline,
-			String workscontractdeadline, List<Domain> domains) {
-		super();
+			String workscontractdeadline,List<Domain> domains) {
+		super(); // List<Domain> domains
 		this.masterAgreementTypeId = masterAgreementTypeId;
 		this.masterAgreementTypeName = masterAgreementTypeName;
 		this.validFrom = validFrom;
@@ -45,11 +55,11 @@ public class MasterAgreementType {
 		this.domains = domains;
 	}
 
-	public String getMasterAgreementTypeId() {
+	public Integer getMasterAgreementTypeId() {
 		return masterAgreementTypeId;
 	}
 
-	public void setMasterAgreementTypeId(String masterAgreementTypeId) {
+	public void setMasterAgreementTypeId(Integer masterAgreementTypeId) {
 		this.masterAgreementTypeId = masterAgreementTypeId;
 	}
 
@@ -114,7 +124,7 @@ public class MasterAgreementType {
 		return "MasterAgreementType [masterAgreementTypeId=" + masterAgreementTypeId + ", masterAgreementTypeName="
 				+ masterAgreementTypeName + ", validFrom=" + validFrom + ", validUntil=" + validUntil
 				+ ", dailyrateIndicator=" + dailyrateIndicator + ", deadline=" + deadline + ", teamdeadline="
-				+ teamdeadline + ", workscontractdeadline=" + workscontractdeadline + ", domains=" + domains + "]";
+				+ teamdeadline + ", workscontractdeadline=" + workscontractdeadline +  "]";
 	}
 
-}
+}//", domains=" + domains +
