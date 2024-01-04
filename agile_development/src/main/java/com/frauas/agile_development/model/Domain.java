@@ -1,13 +1,24 @@
 package com.frauas.agile_development.model;
 
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Domain {
-	
+@Entity
+@Data
+public class Domain implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String domainId;
 	private String domainName;
+	//@ElementCollection
+	@OneToMany(cascade = CascadeType.ALL)
+	//@JoinColumn(name = "domain_id", referencedColumnName = "id")
 	List<Role> roles;
-	
 
 	public Domain() {
 	}

@@ -1,21 +1,36 @@
 package com.frauas.agile_development.model;
 
-public class Role {
-	
+import jakarta.persistence.*;
+
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+@Entity
+public class Role implements Serializable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String roleName;
 	private String experienceLevel;
 	private String technologiesCatalog;
-
+//
+//	@ManyToOne
+//	private Domain domain;
 	public Role() {
 	}
 
-	public Role(String roleName, String experienceLevel, String technologiesCatalog) {
+	public Role(Integer id, String roleName, String experienceLevel, String technologiesCatalog) {
 		super();
+		this.id = id;
 		this.roleName = roleName;
 		this.experienceLevel = experienceLevel;
 		this.technologiesCatalog = technologiesCatalog;
 	}
-
+	public Integer getId() {	return id; }
+	public void setId(Integer id) { this.id = id; }
 	public String getRoleName() {
 		return roleName;
 	}
@@ -42,7 +57,7 @@ public class Role {
 
 	@Override
 	public String toString() {
-		return "Role [roleName=" + roleName + ", experienceLevel=" + experienceLevel + ", technologiesLevel="
+		return "Role [roleName=" + id + "roleName=" + roleName + ", experienceLevel=" + experienceLevel + ", technologiesLevel="
 				+ technologiesCatalog + "]";
 	}
 
