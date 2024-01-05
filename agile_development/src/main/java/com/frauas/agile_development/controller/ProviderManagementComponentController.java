@@ -1,4 +1,5 @@
 package com.frauas.agile_development.controller;
+
 import java.util.List;
 
 import com.frauas.agile_development.model.Domain;
@@ -21,9 +22,9 @@ public class ProviderManagementComponentController {
 
     @Autowired
     private ProviderManagementComponentService providerManagementComponentService;
-     @Autowired
-     private DomainService domainService;
-     @Autowired
+    @Autowired
+    private DomainService domainService;
+    @Autowired
     private RoleService roleService;
 
     @Autowired
@@ -44,7 +45,6 @@ public class ProviderManagementComponentController {
         return providerManagementComponentService.saveProvider(provider);
     }
 
- 
     @GetMapping("/providers")
     public List<Provider> findAllProviders() {
         return providerManagementComponentService.getProviders();
@@ -54,6 +54,7 @@ public class ProviderManagementComponentController {
     public Provider findProviderById(@PathVariable int id) {
         return providerManagementComponentService.getProviderById(id);
     }
+
     @GetMapping(value = "/mastertype/all")
     public ResponseEntity<List<MasterAgreementType>> getMasterAgreements() {
         List<MasterAgreementType> masterAgreements = masterAgreementTypeServiceImpl.getMasterAgreements();
@@ -67,7 +68,8 @@ public class ProviderManagementComponentController {
     }
 
     @PostMapping(value = "/addmastertype")
-    public ResponseEntity<MasterAgreementType> addMasterAgreements(@RequestBody MasterAgreementType masterAgreementType) {
+    public ResponseEntity<MasterAgreementType> addMasterAgreements(
+            @RequestBody MasterAgreementType masterAgreementType) {
         MasterAgreementType newMasterAgreement = masterAgreementTypeServiceImpl.addMasterAgreement(masterAgreementType);
         return new ResponseEntity<>(newMasterAgreement, HttpStatus.OK);
     }
