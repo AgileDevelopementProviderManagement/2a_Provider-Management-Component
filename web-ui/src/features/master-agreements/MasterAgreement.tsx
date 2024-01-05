@@ -20,12 +20,19 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, FunctionComponent, forwardRef, useState } from "react";
+import {
+  ChangeEvent,
+  FunctionComponent,
+  forwardRef,
+  useEffect,
+  useState,
+} from "react";
 import { MasterAgreementType } from "./types";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { Domain } from "../../types";
 import { TransitionProps } from "@mui/material/transitions";
+import { useAxios } from "../../app-providers/AxiosProvider";
 
 interface Column {
   id: string;
@@ -86,119 +93,6 @@ const columns: readonly Column[] = [
   },
 ];
 
-const rows: MasterAgreementType[] = [
-  {
-    masterAgreementTypeId: "1",
-    masterAgreementTypeName: "Chevrolet",
-    validFrom: "1/10/2023",
-    validUntil: "8/17/2023",
-    dailyrateIndicator: "44",
-    deadline: "8/21/2023",
-    teamdeadline: "12/22/2023",
-    workscontractdeadline: "8/2/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "2",
-    masterAgreementTypeName: "Saturn",
-    validFrom: "10/30/2023",
-    validUntil: "5/22/2023",
-    dailyrateIndicator: "95",
-    deadline: "3/8/2023",
-    teamdeadline: "7/6/2023",
-    workscontractdeadline: "6/7/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "3",
-    masterAgreementTypeName: "Ford",
-    validFrom: "2/17/2023",
-    validUntil: "6/27/2023",
-    dailyrateIndicator: "74",
-    deadline: "9/26/2023",
-    teamdeadline: "3/20/2023",
-    workscontractdeadline: "9/20/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "4",
-    masterAgreementTypeName: "Chevrolet",
-    validFrom: "2/28/2023",
-    validUntil: "2/21/2023",
-    dailyrateIndicator: "1",
-    deadline: "4/7/2023",
-    teamdeadline: "8/11/2023",
-    workscontractdeadline: "12/6/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "5",
-    masterAgreementTypeName: "Mitsubishi",
-    validFrom: "3/8/2023",
-    validUntil: "9/14/2023",
-    dailyrateIndicator: "85",
-    deadline: "1/28/2023",
-    teamdeadline: "8/3/2023",
-    workscontractdeadline: "3/29/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "6",
-    masterAgreementTypeName: "Saab",
-    validFrom: "11/10/2023",
-    validUntil: "2/2/2023",
-    dailyrateIndicator: "15",
-    deadline: "6/5/2023",
-    teamdeadline: "11/17/2023",
-    workscontractdeadline: "8/9/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "7",
-    masterAgreementTypeName: "Nissan",
-    validFrom: "6/12/2023",
-    validUntil: "2/22/2023",
-    dailyrateIndicator: "77",
-    deadline: "5/7/2023",
-    teamdeadline: "6/7/2023",
-    workscontractdeadline: "10/14/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "8",
-    masterAgreementTypeName: "Oldsmobile",
-    validFrom: "4/4/2023",
-    validUntil: "9/26/2023",
-    dailyrateIndicator: "21",
-    deadline: "5/9/2023",
-    teamdeadline: "9/22/2023",
-    workscontractdeadline: "3/7/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "9",
-    masterAgreementTypeName: "Toyota",
-    validFrom: "12/25/2023",
-    validUntil: "9/17/2023",
-    dailyrateIndicator: "95",
-    deadline: "11/24/2023",
-    teamdeadline: "7/1/2023",
-    workscontractdeadline: "12/5/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-  {
-    masterAgreementTypeId: "10",
-    masterAgreementTypeName: "Hyundai",
-    validFrom: "10/29/2023",
-    validUntil: "4/14/2023",
-    dailyrateIndicator: "41",
-    deadline: "5/6/2023",
-    teamdeadline: "9/16/2023",
-    workscontractdeadline: "1/20/2023",
-    domains: [{ domainId: "23", domainName: "D1" }],
-  },
-];
-
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
@@ -211,6 +105,8 @@ const Transition = forwardRef(function Transition(
 const MasterAgreement: FunctionComponent = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rows, setRows] = useState<MasterAgreementType[]>([]);
+  const axios = useAxios();
 
   const [open, setOpen] = useState(false);
 
@@ -231,6 +127,10 @@ const MasterAgreement: FunctionComponent = () => {
     setPage(0);
   };
 
+  useEffect(() => {
+    axios.get("/mastertype/all").then(({data}) => setRows(data));
+  }, [axios]);
+
   return (
     <Box p={2}>
       <Box
@@ -250,7 +150,7 @@ const MasterAgreement: FunctionComponent = () => {
           Create Master Agreement
         </Button>
       </Box>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper sx={{ width: "100%", overflow: "hidden", padding: 1 }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -288,6 +188,13 @@ const MasterAgreement: FunctionComponent = () => {
                     </TableRow>
                   );
                 })}
+              {rows.length === 0 && (
+                <TableRow>
+                  <TableCell align="center" colSpan={columns.length}>
+                    No master agreements found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -322,11 +229,18 @@ const MasterAgreement: FunctionComponent = () => {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Box sx={{backgroundColor: "inherit", width: "100%", overflow: "hidden" , padding: 8}}>
-          <Paper sx={{width: "100%", overflow: "hidden",  padding: 1}}>
+        <Box
+          sx={{
+            backgroundColor: "inherit",
+            width: "100%",
+            overflow: "hidden",
+            padding: 8,
+          }}
+        >
+          <Paper sx={{ width: "100%", overflow: "hidden", padding: 1 }}>
             This is a form
           </Paper>
-        </Box>  
+        </Box>
       </Dialog>
     </Box>
   );
