@@ -12,6 +12,7 @@ import com.frauas.agile_development.service.ProviderManagementComponentService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("*")
 public class ProviderManagementComponentController {
 
     @Autowired
