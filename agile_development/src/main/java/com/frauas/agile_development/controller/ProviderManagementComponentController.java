@@ -1,31 +1,50 @@
 package com.frauas.agile_development.controller;
+
 import java.util.List;
 
+import com.frauas.agile_development.model.Domain;
 import com.frauas.agile_development.model.MasterAgreementType;
 import com.frauas.agile_development.model.Provider;
+import com.frauas.agile_development.model.Role;
+import com.frauas.agile_development.service.DomainService;
 import com.frauas.agile_development.service.MasterAgreementTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.frauas.agile_development.service.ProviderManagementComponentService;
+import com.frauas.agile_development.service.RoleService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("*")
 public class ProviderManagementComponentController {
 
     @Autowired
     private ProviderManagementComponentService providerManagementComponentService;
+    @Autowired
+    private DomainService domainService;
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private MasterAgreementTypeServiceImpl masterAgreementTypeServiceImpl;
+
+    @GetMapping("/roles")
+    public List<Role> getAllRoles() {
+        return roleService.getAllRoles();
+    }
+
+    @GetMapping("/domains")
+    public List<Domain> getAllDomains() {
+        return domainService.getAllDomains();
+    }
 
     @PostMapping("/addProvider")
     public Provider addProvider(@RequestBody Provider provider) {
         return providerManagementComponentService.saveProvider(provider);
     }
 
- 
     @GetMapping("/providers")
     public List<Provider> findAllProviders() {
         return providerManagementComponentService.getProviders();
@@ -35,6 +54,7 @@ public class ProviderManagementComponentController {
     public Provider findProviderById(@PathVariable int id) {
         return providerManagementComponentService.getProviderById(id);
     }
+
     @GetMapping(value = "/mastertype/all")
     public ResponseEntity<List<MasterAgreementType>> getMasterAgreements() {
         List<MasterAgreementType> masterAgreements = masterAgreementTypeServiceImpl.getMasterAgreements();
@@ -48,7 +68,8 @@ public class ProviderManagementComponentController {
     }
 
     @PostMapping(value = "/addmastertype")
-    public ResponseEntity<MasterAgreementType> addMasterAgreements(@RequestBody MasterAgreementType masterAgreementType) {
+    public ResponseEntity<MasterAgreementType> addMasterAgreements(
+            @RequestBody MasterAgreementType masterAgreementType) {
         MasterAgreementType newMasterAgreement = masterAgreementTypeServiceImpl.addMasterAgreement(masterAgreementType);
         return new ResponseEntity<>(newMasterAgreement, HttpStatus.OK);
     }
