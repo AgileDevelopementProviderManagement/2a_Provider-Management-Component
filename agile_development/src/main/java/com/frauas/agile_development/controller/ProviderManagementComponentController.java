@@ -2,10 +2,7 @@ package com.frauas.agile_development.controller;
 
 import java.util.List;
 
-import com.frauas.agile_development.model.Domain;
-import com.frauas.agile_development.model.MasterAgreementType;
-import com.frauas.agile_development.model.Provider;
-import com.frauas.agile_development.model.Role;
+import com.frauas.agile_development.model.*;
 import com.frauas.agile_development.service.DomainService;
 import com.frauas.agile_development.service.MasterAgreementTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +24,34 @@ public class ProviderManagementComponentController {
     @Autowired
     private RoleService roleService;
 
+    private StandardExperienceLevel experienceLevel;
+
+    private StandardTechCatalog technologiesCatalog;
+
     @Autowired
     private MasterAgreementTypeServiceImpl masterAgreementTypeServiceImpl;
 
+    @GetMapping("/techCataloglevels")
+    public StandardTechCatalog[] getAllTechnologyCatalogs() {
+        return technologiesCatalog.values();
+    }
+    @GetMapping("/experiencelevels")
+    public StandardExperienceLevel[] getAllExpLevels() {
+        return experienceLevel.values();
+    }
+
     @GetMapping("/roles")
-    public List<Role> getAllRoles() {
+    public List<StandardRoles> getAllRoles() {
         return roleService.getAllRoles();
     }
 
     @GetMapping("/domains")
-    public List<Domain> getAllDomains() {
+    public List<StandardDomains> getAllDomains() {
         return domainService.getAllDomains();
+    }
+    @PostMapping("/adddomains")
+    public List<StandardDomains> addDomains(@RequestBody List<StandardDomains> domains) {
+        return domainService.addDomains(domains);
     }
 
     @PostMapping("/addProvider")
@@ -61,8 +75,8 @@ public class ProviderManagementComponentController {
         return new ResponseEntity<>(masterAgreements, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getmastertype/{id}")
-    public ResponseEntity<MasterAgreementType> addMasterAgreements(@PathVariable("id") int masterId) {
+    @GetMapping(value = "/getmastertype")
+    public ResponseEntity<MasterAgreementType> addMasterAgreements(@RequestParam("id") int masterId) {
         MasterAgreementType masterAgreements = masterAgreementTypeServiceImpl.getMasterAgreement(masterId);
         return new ResponseEntity<>(masterAgreements, HttpStatus.OK);
     }
