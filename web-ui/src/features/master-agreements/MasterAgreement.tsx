@@ -2,12 +2,9 @@ import {
   AppBar,
   Box,
   Button,
+  Chip,
   Dialog,
-  Divider,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
   Slide,
   Table,
@@ -23,7 +20,9 @@ import {
 import {
   ChangeEvent,
   FunctionComponent,
+  ReactNode,
   forwardRef,
+  useCallback,
   useEffect,
   useState,
 } from "react";
@@ -33,18 +32,46 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Domain } from "../../types";
 import { TransitionProps } from "@mui/material/transitions";
 import { useAxios } from "../../app-providers/AxiosProvider";
+import CreateMasterAgreement from "./CreateMasterAgreement";
 
 interface Column {
   id: string;
   label: string;
   minWidth?: number;
-  align?: "right";
-  format?: (value: any) => string;
+  align?: "left" | "right" | "center" | "inherit" | "justify" | undefined;
+  format?: (value: any) => ReactNode;
 }
 
 const columns: readonly Column[] = [
   { id: "masterAgreementTypeId", label: "ID", minWidth: 50 },
   { id: "masterAgreementTypeName", label: "Agreement Name", minWidth: 170 },
+  {
+    id: "domains",
+    label: "Domains",
+    minWidth: 200,
+    align: "left",
+    format: (domains: Domain[]) => (
+      <Box>
+        {domains?.map((domain) => {
+          return (
+            <Box sx={{ marginBottom: 1 }} key={domain.id}>
+              <Typography gutterBottom variant="h6" component="div">
+                {domain.domainId}-{domain.domainName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" component="div">
+                {domain.roles?.map((role) => (
+                  <Chip
+                    key={role.id}
+                    label={`${role.roleName} | ${role.experienceLevel} | ${role.technologiesCatalog}`}
+                  />
+                ))}
+              </Typography>
+            </Box>
+          );
+        })}
+      </Box>
+    ),
+  },
   {
     id: "validFrom",
     label: "Valid From",
@@ -81,16 +108,6 @@ const columns: readonly Column[] = [
     minWidth: 170,
     align: "right",
   },
-  {
-    id: "domains",
-    label: "Domains",
-    minWidth: 170,
-    align: "right",
-    format: (domains: Domain[]) =>
-      domains
-        ?.map((domain) => domain.domainId + "-" + domain.domainName)
-        .join(","),
-  },
 ];
 
 const Transition = forwardRef(function Transition(
@@ -118,7 +135,7 @@ const MasterAgreement: FunctionComponent = () => {
     setOpen(false);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -127,9 +144,20 @@ const MasterAgreement: FunctionComponent = () => {
     setPage(0);
   };
 
-  useEffect(() => {
-    axios.get("/mastertype/all").then(({data}) => setRows(data));
+  const fetchAllAgreements = useCallback(() => {
+    axios.get("/mastertype/all").then(({ data }) => setRows(data));
   }, [axios]);
+
+  const handleSave = (payload: MasterAgreementType) => {
+    axios.post("/addmastertype", payload).then(() => {
+      fetchAllAgreements();
+      handleClose();
+    });
+  };
+
+  useEffect(() => {
+    fetchAllAgreements();
+  }, [fetchAllAgreements]);
 
   return (
     <Box p={2}>
@@ -214,10 +242,10 @@ const MasterAgreement: FunctionComponent = () => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar sx={{ position: "sticky", top: 0 }}>
           <Toolbar>
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-              Create master agreement
+              Create Master Agreement
             </Typography>
             <IconButton
               edge="start"
@@ -233,12 +261,14 @@ const MasterAgreement: FunctionComponent = () => {
           sx={{
             backgroundColor: "inherit",
             width: "100%",
-            overflow: "hidden",
-            padding: 8,
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: 4,
+            paddingBottom: 8,
           }}
         >
-          <Paper sx={{ width: "100%", overflow: "hidden", padding: 1 }}>
-            This is a form
+          <Paper sx={{ width: "50%", height: "100%", padding: 1 }}>
+            <CreateMasterAgreement onSave={handleSave} onCancel={handleClose} />
           </Paper>
         </Box>
       </Dialog>

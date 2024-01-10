@@ -1,7 +1,7 @@
 import { Domain } from "../../types";
 
 export type MasterAgreementType = {
-  masterAgreementTypeId: string;
+  masterAgreementTypeId?: string;
   masterAgreementTypeName: string;
   validFrom: string;
   validUntil: string;
