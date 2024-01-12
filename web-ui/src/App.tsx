@@ -22,35 +22,19 @@ function App() {
       >
         <Route
           index
-          element={
-            <AuthProvider>
-              <Home />
-            </AuthProvider>
-          }
+          element={<Home />}
         />
         <Route
           path="providers"
-          element={
-            <AuthProvider>
-              <Providers />
-            </AuthProvider>
-          }
+          element={<Providers />}
         />
         <Route
           path="masteragreements"
-          element={
-            <AuthProvider>
-              <MasterAgreement />
-            </AuthProvider>
-          }
+          element={<MasterAgreement />}
         />
         <Route
           path="offers"
-          element={
-            <AuthProvider>
-              <Offers />
-            </AuthProvider>
-          }
+          element={<Offers />}
         />
       </Route>
       <Route path="*" element={<NoMatch />} />
