@@ -16,7 +16,7 @@ export const AxiosProvider: FunctionComponent<PropsWithChildren> = ({
   const axiosInstance = useRef(
     axios.create({
       baseURL: "http://localhost:8080/api/",
-      timeout: 1000,
+      timeout: 1000000,
       headers: { "Content-Type": "application/json" },
     })
   );

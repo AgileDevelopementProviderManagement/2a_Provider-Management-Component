@@ -33,13 +33,14 @@ import { Domain } from "../../types";
 import { useAxios } from "../../app-providers/AxiosProvider";
 import { TransitionProps } from "@mui/material/transitions";
 import CreateProvider from "./CreateProvider";
+import { MasterAgreementType } from "../master-agreements/types";
 
 interface Column {
   id: string;
   label: string;
   minWidth?: number;
   align?: "left" | "right" | "center" | "inherit" | "justify" | undefined;
-  format?: (value: any) => ReactNode;
+  format?: (value: any, agreementsMap: Map<string, string>) => ReactNode;
 }
 
 const columns: readonly Column[] = [
@@ -63,7 +64,11 @@ const columns: readonly Column[] = [
               <Typography gutterBottom variant="h6" component="div">
                 {domain.domainId}-{domain.domainName}
               </Typography>
-              <Typography variant="body2" color="text.secondary" component="div">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                component="div"
+              >
                 {domain.roles?.map((role) => (
                   <Chip
                     key={role.id}
@@ -78,10 +83,31 @@ const columns: readonly Column[] = [
     ),
   },
   {
+    id: "address",
+    label: "Address",
+    minWidth: 170,
+    align: "left",
+  },
+  {
+    id: "masterAgreementTypeId",
+    label: "Master Agreements",
+    minWidth: 170,
+    align: "left",
+    format: (agreementIds: number[], agm: Map<string, string>) => (
+      <Box display="flex" gap={1}>
+        {agreementIds?.map((agreementId) => {
+          return (
+            <Chip label={agm.get(String(agreementId))} />
+          );
+        })}
+      </Box>
+    ),
+  },
+  {
     id: "price",
     label: "Price",
     minWidth: 170,
-    align: "right"
+    align: "right",
   },
   {
     id: "validFrom",
@@ -100,7 +126,7 @@ const columns: readonly Column[] = [
     label: "Exists Since",
     minWidth: 170,
     align: "right",
-  }
+  },
 ];
 
 const Transition = forwardRef(function Transition(
@@ -116,8 +142,12 @@ const Providers: FunctionComponent = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState<ProviderType[]>([]);
-  const axios = useAxios();
   const [open, setOpen] = useState(false);
+  const [masterAgreements, setMasterAgreement] = useState<
+    MasterAgreementType[]
+  >([]);
+
+  const axios = useAxios();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -140,13 +170,22 @@ const Providers: FunctionComponent = () => {
       fetchAllProviders();
       handleClose();
     });
-  }
+  };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
   useEffect(() => fetchAllProviders(), [fetchAllProviders]);
+
+  useEffect(() => {
+    axios.get("/mastertype/all").then(({ data }) => setMasterAgreement(data));
+  }, [axios]);
+
+  const agreementsMap = masterAgreements.reduce((acc, item) => {
+    acc.set(String(item.masterAgreementTypeId) || "", item.masterAgreementTypeName)
+    return acc
+  }, new Map<string, string>())
 
   return (
     <Box p={2}>
@@ -159,14 +198,16 @@ const Providers: FunctionComponent = () => {
         <Typography variant="h4" component="div" mb={2}>
           Providers
         </Typography>
-        <Button variant="contained"
-                onClick={handleClickOpen}
-                startIcon={<AddIcon />}>
+        <Button
+          variant="contained"
+          onClick={handleClickOpen}
+          startIcon={<AddIcon />}
+        >
           Create Providers
         </Button>
       </Box>
 
-      <Paper sx={{ width: "100%", overflow: "hidden" , padding: 1}}>
+      <Paper sx={{ width: "100%", overflow: "hidden", padding: 1 }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -197,14 +238,14 @@ const Providers: FunctionComponent = () => {
                         const value = (row as any)[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format ? column.format(value) : value}
+                            {column.format ? column.format(value, agreementsMap) : value}
                           </TableCell>
                         );
                       })}
                     </TableRow>
                   );
                 })}
-               {rows.length === 0 && (
+              {rows.length === 0 && (
                 <TableRow>
                   <TableCell align="center" colSpan={columns.length}>
                     No providers found
@@ -254,11 +295,16 @@ const Providers: FunctionComponent = () => {
             padding: 8,
           }}
         >
-          <Paper sx={{
-            width: "50%",
-            padding: 1
-          }}>
-            <CreateProvider onCancel={handleClose} onSave={handleSave}></CreateProvider>
+          <Paper
+            sx={{
+              width: "50%",
+              padding: 1,
+            }}
+          >
+            <CreateProvider
+              onCancel={handleClose}
+              onSave={handleSave}
+            ></CreateProvider>
           </Paper>
         </Box>
       </Dialog>
@@ -267,6 +313,3 @@ const Providers: FunctionComponent = () => {
 };
 
 export default Providers;
-function setRows(data: any): any {
-  throw new Error("Function not implemented.");
-}
