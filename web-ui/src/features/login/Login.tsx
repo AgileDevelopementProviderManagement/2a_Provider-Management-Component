@@ -1,16 +1,11 @@
 import {
   Grid,
   Paper,
-  Avatar,
   TextField,
-  Button,
   Typography,
   Link,
-  FormControlLabel,
-  Checkbox,
   Alert,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Controller, useForm } from "react-hook-form";
 import { useAxios } from "../../app-providers/AxiosProvider";
 import { useState } from "react";
@@ -76,7 +71,6 @@ const Login = () => {
           render={({
             field: { onChange, value },
             fieldState: { error },
-            formState,
           }) => (
             <TextField
               helperText={error ? error.message : null}
@@ -97,8 +91,7 @@ const Login = () => {
           rules={{ required: true }}
           render={({
             field: { onChange, value },
-            fieldState: { error },
-            formState,
+            fieldState: { error }
           }) => (
             <TextField
               helperText={error ? error.message : null}

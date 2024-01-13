@@ -172,8 +172,7 @@ const CreateMasterAgreement: FunctionComponent<CreateMasterAgreementProps> = ({
         rules={{ required: true }}
         render={({
           field: { onChange, value },
-          fieldState: { error },
-          formState,
+          fieldState: { error }
         }) => (
           <TextField
             helperText={error ? error.message : null}
@@ -193,7 +192,6 @@ const CreateMasterAgreement: FunctionComponent<CreateMasterAgreementProps> = ({
         render={({
           field: { onChange, value },
           fieldState: { error },
-          formState,
         }) => (
           <TextField
             helperText={error ? error.message : null}
