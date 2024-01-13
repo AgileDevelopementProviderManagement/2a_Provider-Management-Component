@@ -1,6 +1,5 @@
 import {
   FunctionComponent,
-  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -197,7 +196,6 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
         render={({
           field: { onChange, value },
           fieldState: { error },
-          formState,
         }) => (
           <TextField
             helperText={error ? error.message : null}
@@ -310,8 +308,7 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
         rules={{ required: true }}
         render={({
           field: { onChange, value },
-          fieldState: { error },
-          formState,
+          fieldState: { error }
         }) => (
           <TextField
             helperText={error ? error.message : null}
