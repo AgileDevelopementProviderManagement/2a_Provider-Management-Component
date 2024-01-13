@@ -4,11 +4,10 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Link,
   Typography,
 } from "@mui/material";
 import { Fragment, FunctionComponent } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import HandymanIcon from "@mui/icons-material/Handyman";
 import GavelIcon from '@mui/icons-material/Gavel';
