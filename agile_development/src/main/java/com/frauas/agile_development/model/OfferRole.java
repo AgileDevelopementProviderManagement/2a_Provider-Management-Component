@@ -1,14 +1,16 @@
 package com.frauas.agile_development.model;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
 @Entity
-public class Role implements Serializable {
+public class OfferRole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,31 +18,27 @@ public class Role implements Serializable {
 	private String roleName;
 	private String experienceLevel;
 	private String technologiesCatalog;
+	private Float offerroleprice;
 
-	public Float getRoleprice() {
-		return roleprice;
-	}
-
-	public void setRoleprice(Float roleprice) {
-		this.roleprice = roleprice;
-	}
-
-	private Float roleprice;
-//
-//	@ManyToOne
-//	private Domain domain;
-	public Role() {
-	}
-
-	public Role(Integer id, String roleName, String experienceLevel, String technologiesCatalog) {
-		super();
+	public OfferRole(Integer id, String roleName, String experienceLevel, String technologiesCatalog, Float offerroleprice) {
 		this.id = id;
 		this.roleName = roleName;
 		this.experienceLevel = experienceLevel;
 		this.technologiesCatalog = technologiesCatalog;
+		this.offerroleprice = offerroleprice;
 	}
-	public Integer getId() {	return id; }
-	public void setId(Integer id) { this.id = id; }
+
+	public OfferRole() {
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getRoleName() {
 		return roleName;
 	}
@@ -65,11 +63,11 @@ public class Role implements Serializable {
 		this.technologiesCatalog = technologiesCatalog;
 	}
 
-	@Override
-	public String toString() {
-		return "Role [roleName=" + id + "roleName=" + roleName + ", experienceLevel=" + experienceLevel + ", technologiesLevel="
-				+ technologiesCatalog + "]";
+	public Float getOfferroleprice() {
+		return offerroleprice;
 	}
 
-	
+	public void setOfferroleprice(Float offerroleprice) {
+		this.offerroleprice = offerroleprice;
+	}
 }

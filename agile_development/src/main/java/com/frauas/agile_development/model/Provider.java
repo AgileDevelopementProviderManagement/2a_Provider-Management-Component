@@ -31,13 +31,20 @@ public class Provider implements Serializable {
     private Float price;
     private List<Integer> masterAgreementTypeId;
 
+	private boolean offerestablished;
+
+	private String userName;
+
+	private String userType;
+
+
     public Provider() {
    
     }
 
 	public Provider(Integer providerId, String providerName, List<Domain> domains, String address, String existsSince,
 			String validFrom, String validUntil, String experienceLevel, String technologyLevel, Float price,
-			List<Integer> masterAgreementTypeId) {
+			List<Integer> masterAgreementTypeId,boolean offerestablished,String userName, String userType) {
 		super();
 		this.providerId = providerId;
 		this.providerName = providerName;
@@ -50,6 +57,9 @@ public class Provider implements Serializable {
 		this.technologyLevel = technologyLevel;
 		this.price = price;
 		this.masterAgreementTypeId = masterAgreementTypeId;
+		this.offerestablished = offerestablished;
+		this.userName = userName;
+		this.userType = userType;
 	}
 
 	public Integer getProviderId() {
@@ -138,6 +148,30 @@ public class Provider implements Serializable {
 
 	public void setMasterAgreementTypeId(List<Integer> masterAgreementTypeId) {
 		this.masterAgreementTypeId = masterAgreementTypeId;
+	}
+
+	public boolean isOfferestablished() {
+		return offerestablished;
+	}
+
+	public void setOfferestablished(boolean offerestablished) {
+		this.offerestablished = offerestablished;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	@Override
