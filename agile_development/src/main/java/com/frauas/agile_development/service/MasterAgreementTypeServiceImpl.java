@@ -47,6 +47,22 @@ public class MasterAgreementTypeServiceImpl implements MasterAgreementTypeServic
         }
     }
 
+
+    public MasterAgreementType updateMasterAgreementWithOfferedFlags(int id) throws MasterAgreeTypeNotFoundException{
+        Optional<MasterAgreementType> isInDb = masterAgreementTypeRepository.findById(id);
+
+        if (isInDb.isPresent()) {
+            MasterAgreementType newMAT = isInDb.get();
+
+            newMAT.setOfferLinked(true);
+
+            return masterAgreementTypeRepository.save(newMAT);
+        }
+        else {
+              return null;
+        }
+    }
+
     @Override
     public void deleteMasterAgreement(int id) {
        masterAgreementTypeRepository.deleteById(id);

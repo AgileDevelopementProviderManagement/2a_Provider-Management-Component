@@ -7,9 +7,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frauas.agile_development.model.*;
-import com.frauas.agile_development.service.AuthService;
-import com.frauas.agile_development.service.DomainService;
-import com.frauas.agile_development.service.MasterAgreementTypeServiceImpl;
+import com.frauas.agile_development.service.*;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,8 +28,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import com.frauas.agile_development.service.ProviderManagementComponentService;
-import com.frauas.agile_development.service.RoleService;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @RestController
 @RequestMapping("/api")
@@ -39,6 +43,9 @@ public class ProviderManagementComponentController {
     private RoleService roleService;
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private OfferService offerService;
 
     private StandardExperienceLevel experienceLevel;
 
@@ -125,10 +132,56 @@ public class ProviderManagementComponentController {
         }
     }
 
-    @DeleteMapping(value = "/mastertype/{deleteid}")
-    public void removeMasterAgreement(@PathVariable("deleteid") int deleteid) {
-        masterAgreementTypeServiceImpl.deleteMasterAgreement(deleteid);
+    @PutMapping("/updateprovideroffer")
+    public ResponseEntity<Provider> updateProviderWithMat(@RequestParam("id") int id, @RequestBody Provider updatedprovider){
+        Provider updated = providerManagementComponentService
+                .updateProviderdetails(id, updatedprovider);
 
+        if (updated != null) {
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/linkmasterwithtoffer/{id}")
+    public ResponseEntity<MasterAgreementType> updateMasterAgreementOffer(
+            @PathVariable int id,
+            @RequestBody MasterAgreementType updatedMasterAgreement) throws Exception {
+
+        MasterAgreementType updated = masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedFlags(id);
+
+        if (updated != null) {
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping(value = "/deletemastertype")
+    public ResponseEntity<Void> removeMasterAgreement(@RequestParam("id") int id) {
+        try {
+            masterAgreementTypeServiceImpl.deleteMasterAgreement(id);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/saveoffer")
+    public ResponseEntity<Offer> addOffer(@RequestBody Offer offer,@RequestParam("masterid") int mid,@RequestParam("providerid") int pid) throws Exception {
+        MasterAgreementType updated =masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedFlags(mid);
+        providerManagementComponentService.updateProviderWithMasterAgreement(pid,offer);
+        Offer savedOffer = offerService.saveOffer(offer);
+        return new ResponseEntity<Offer>(savedOffer,HttpStatus.OK);
+    }
+
+    @GetMapping("/getAlloffers")
+    public ResponseEntity<List<Offer>>addOffer() {
+        List<Offer> offerList = offerService.getallOffers();
+        return new ResponseEntity<>(offerList, HttpStatus.OK);
     }
 
 }
