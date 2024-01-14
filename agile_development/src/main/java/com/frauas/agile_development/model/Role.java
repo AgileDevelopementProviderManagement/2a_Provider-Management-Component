@@ -16,6 +16,16 @@ public class Role implements Serializable {
 	private String roleName;
 	private String experienceLevel;
 	private String technologiesCatalog;
+
+	public Float getRoleprice() {
+		return roleprice;
+	}
+
+	public void setRoleprice(Float roleprice) {
+		this.roleprice = roleprice;
+	}
+
+	private Float roleprice;
 //
 //	@ManyToOne
 //	private Domain domain;
