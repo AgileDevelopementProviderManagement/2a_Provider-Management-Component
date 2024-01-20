@@ -13,8 +13,7 @@ public class OfferDomain {
     private Long id;
     private String domainId;
     private String domainName;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<OfferRole> offerRoles;
+
     private float rolepriceaverage;
 
 }

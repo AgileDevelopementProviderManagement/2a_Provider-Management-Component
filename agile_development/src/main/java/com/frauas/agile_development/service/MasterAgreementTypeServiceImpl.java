@@ -54,7 +54,7 @@ public class MasterAgreementTypeServiceImpl implements MasterAgreementTypeServic
         if (isInDb.isPresent()) {
             MasterAgreementType newMAT = isInDb.get();
 
-            newMAT.setOfferLinked(true);
+            newMAT.setIsAccepted("Accepted");
 
             return masterAgreementTypeRepository.save(newMAT);
         }

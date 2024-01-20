@@ -1,34 +1,24 @@
 package com.frauas.agile_development.controller;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frauas.agile_development.model.*;
 import com.frauas.agile_development.service.*;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
-
-import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @RestController
 @RequestMapping("/api")
@@ -133,7 +123,7 @@ public class ProviderManagementComponentController {
     }
 
     @PutMapping("/updateprovideroffer")
-    public ResponseEntity<Provider> updateProviderWithMat(@RequestParam("id") int id, @RequestBody Provider updatedprovider){
+    public ResponseEntity<Provider> updateProviderWithMat(@RequestParam("id") int id, @RequestBody Provider updatedprovider) {
         Provider updated = providerManagementComponentService
                 .updateProviderdetails(id, updatedprovider);
 
@@ -171,17 +161,27 @@ public class ProviderManagementComponentController {
     }
 
     @PostMapping("/saveoffer")
-    public ResponseEntity<Offer> addOffer(@RequestBody Offer offer,@RequestParam("masterid") int mid,@RequestParam("providerid") int pid) throws Exception {
-        MasterAgreementType updated =masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedFlags(mid);
-        providerManagementComponentService.updateProviderWithMasterAgreement(pid,offer);
-        Offer savedOffer = offerService.saveOffer(offer);
-        return new ResponseEntity<Offer>(savedOffer,HttpStatus.OK);
+    public ResponseEntity<OfferRole> addOffer(@RequestBody OfferRole offerRole, @RequestParam("masterid") int mid, @RequestParam("providerid") int pid) throws Exception {
+        MasterAgreementType updated = masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedFlags(mid);
+        providerManagementComponentService.updateProviderWithMasterAgreement(pid, offerRole);
+        OfferRole savedOffer = offerService.saveOffer(new OfferRole());
+        return new ResponseEntity<>(savedOffer, HttpStatus.OK);
     }
 
     @GetMapping("/getAlloffers")
-    public ResponseEntity<List<Offer>>addOffer() {
-        List<Offer> offerList = offerService.getallOffers();
+    public ResponseEntity<List<OfferRole>> addOffer() {
+        List<OfferRole> offerList = offerService.getallOffers();
         return new ResponseEntity<>(offerList, HttpStatus.OK);
     }
+
+    @GetMapping("/fetchoffersforui")
+    public ResponseEntity<List<OfferRole>> fetchOffers() {
+
+        List<OfferRole> offerList = offerService.fetchOffersForm3a();
+
+        return new ResponseEntity<>(offerList, HttpStatus.OK);
+    }
+
+
 
 }
