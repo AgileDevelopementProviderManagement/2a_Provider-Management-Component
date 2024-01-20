@@ -33,12 +33,18 @@ public class OfferService {
         return offerRepository.findAll();
     }
 
+
+
     public List<OfferRole> fetchOffersForm3a() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<>(headers);
         RestOperations restTemplate = new RestTemplate();
         ((RestTemplate) restTemplate).getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+// The sample of th eAPI response from 3a is like below
+/*[ { "roleName": "Data Architect", "experienceLevel": "INTERMEDIATE", "technologiesCatalog": "Uncommon", "domainId": 2, "domainName": "Data", "masterAgreementTypeId": 1, "masterAgreementTypeName": "MAT1", "provider": [ { "offerId": 6, "name": "provider_y", "quotePrice": 2000, "isAccepted": false, "cycle": null } ] }, { "roleName": "DevOps Eng", "experienceLevel": "JUNIOR", "technologiesCatalog": "Common", "domainId": 4, "domainName": "Operations", "masterAgreementTypeId": 2, "masterAgreementTypeName": "MAT2", "provider": [ { "offerId": 3, "name": "FRAUAS", "quotePrice": 2000, "isAccepted": true, "cycle": null } ] }, { "roleName": "Infrastructure Engineer", "experienceLevel": "ADVANCED", "technologiesCatalog": "Rare", "domainId": 4, "domainName": "Operations", "masterAgreementTypeId": 2, "masterAgreementTypeName": "MAT2", "provider": [ { "offerId": 5, "name": "provider_y", "quotePrice": 4600, "isAccepted": null, "cycle": null } ] }, { "roleName": "Service operator", "experienceLevel": "INTERMEDIATE", "technologiesCatalog": "Common", "domainId": 4, "domainName": "Operations", "masterAgreementTypeId": 1, "masterAgreementTypeName": "MAT1", "provider": [ { "offerId": 1, "name": "FRAUAS", "quotePrice": 2500, "isAccepted": null, "cycle": null }, { "offerId": 4, "name": "provider_y", "quotePrice": 2000, "isAccepted": null, "cycle": null } ] }, { "roleName": "Solution Architect", "experienceLevel": "ADVANCED", "technologiesCatalog": "Rare", "domainId": 1, "domainName": "DevAndConsult", "masterAgreementTypeId": 1, "masterAgreementTypeName": "MAT1", "provider": [ { "offerId": 2, "name": "FRAUAS", "quotePrice": 5000, "isAccepted": null, "cycle": null } ] } ]*/
+
 
         ResponseEntity<String> response = restTemplate.exchange
                 ("https://agiledev3a.pythonanywhere.com/p3aplatform/api/agreement_offers",
