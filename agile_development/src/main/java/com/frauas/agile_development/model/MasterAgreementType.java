@@ -2,9 +2,6 @@ package com.frauas.agile_development.model;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
-
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -18,17 +15,15 @@ public class MasterAgreementType {
 
     private String validFrom;
     private String validUntil;
-
     private String dailyrateIndicator;
     private String deadline;
     private String teamdeadline;
     private String workscontractdeadline;
-    private Boolean offerLinked;
+    private String isAccepted;
+    private List<Integer> providerId;
     private String userName;
     private String userType;
 
-    //@Column(columnDefinition="JSON")
-    //@OneToMany(cascade = CascadeType.ALL)
     @OneToMany(cascade = CascadeType.ALL)
     //@JoinColumn(name = "master_agreement_id", referencedColumnName = "masterAgreementTypeId")
     private List<Domain> domains;
@@ -37,7 +32,7 @@ public class MasterAgreementType {
     }
 
     public MasterAgreementType(int masterAgreementTypeId, String masterAgreementTypeName, String validFrom,
-                               String validUntil, String dailyrateIndicator, String deadline, String teamdeadline, Boolean offerLinked,
+                               String validUntil, String dailyrateIndicator, String deadline, String teamdeadline, String isAccepted,
                                String workscontractdeadline, List<String> offeredProviderList, List<Domain> domains, String userName, String userType) {
         super();
         this.masterAgreementTypeId = masterAgreementTypeId;
@@ -49,7 +44,7 @@ public class MasterAgreementType {
         this.teamdeadline = teamdeadline;
         this.workscontractdeadline = workscontractdeadline;
         this.domains = domains;
-        this.offerLinked = offerLinked;
+        this.isAccepted = isAccepted;
         this.userName = userName;
         this.userType = userType;
 
@@ -143,12 +138,20 @@ public class MasterAgreementType {
         this.userType = userType;
     }
 
-    public Boolean getOfferLinked() {
-        return offerLinked;
+    public List<Integer> getProviderId() {
+        return providerId;
     }
 
-    public void setOfferLinked(Boolean offerLinked) {
-        this.offerLinked = offerLinked;
+    public void setProviderId(List<Integer> providerId) {
+        this.providerId = providerId;
+    }
+
+    public String getIsAccepted() {
+        return isAccepted;
+    }
+
+    public void setIsAccepted(String isAccepted) {
+        this.isAccepted = isAccepted;
     }
 
     @Override

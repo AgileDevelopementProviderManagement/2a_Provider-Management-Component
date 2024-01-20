@@ -29,9 +29,9 @@ public class Provider implements Serializable {
     private String experienceLevel;
     private String technologyLevel;
     private Float price;
-    private List<Integer> masterAgreementTypeId;
 
-	private boolean offerestablished;
+
+	private String isAccepted;
 
 	private String userName;
 
@@ -43,8 +43,8 @@ public class Provider implements Serializable {
     }
 
 	public Provider(Integer providerId, String providerName, List<Domain> domains, String address, String existsSince,
-			String validFrom, String validUntil, String experienceLevel, String technologyLevel, Float price,
-			List<Integer> masterAgreementTypeId,boolean offerestablished,String userName, String userType) {
+					String validFrom, String validUntil, String experienceLevel, String technologyLevel, Float price,
+					String isAccepted, String userName, String userType) {
 		super();
 		this.providerId = providerId;
 		this.providerName = providerName;
@@ -56,8 +56,7 @@ public class Provider implements Serializable {
 		this.experienceLevel = experienceLevel;
 		this.technologyLevel = technologyLevel;
 		this.price = price;
-		this.masterAgreementTypeId = masterAgreementTypeId;
-		this.offerestablished = offerestablished;
+		this.isAccepted = isAccepted;
 		this.userName = userName;
 		this.userType = userType;
 	}
@@ -142,20 +141,12 @@ public class Provider implements Serializable {
 		this.price = price;
 	}
 
-	public List<Integer> getMasterAgreementTypeId() {
-		return masterAgreementTypeId;
+	public String isAccepted() {
+		return isAccepted;
 	}
 
-	public void setMasterAgreementTypeId(List<Integer> masterAgreementTypeId) {
-		this.masterAgreementTypeId = masterAgreementTypeId;
-	}
-
-	public boolean isOfferestablished() {
-		return offerestablished;
-	}
-
-	public void setOfferestablished(boolean offerestablished) {
-		this.offerestablished = offerestablished;
+	public void setAccepted(String accepted) {
+		this.isAccepted = accepted;
 	}
 
 	public String getUserName() {
@@ -176,7 +167,7 @@ public class Provider implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, domains, existsSince, experienceLevel, masterAgreementTypeId, price, providerId,
+		return Objects.hash(address, domains, existsSince, experienceLevel, price, providerId,
 				providerName, technologyLevel, validFrom, validUntil);
 	}
 
@@ -192,7 +183,6 @@ public class Provider implements Serializable {
 		return Objects.equals(address, other.address) && Objects.equals(domains, other.domains)
 				&& Objects.equals(existsSince, other.existsSince)
 				&& Objects.equals(experienceLevel, other.experienceLevel)
-				&& Objects.equals(masterAgreementTypeId, other.masterAgreementTypeId)
 				&& Objects.equals(price, other.price) && Objects.equals(providerId, other.providerId)
 				&& Objects.equals(providerName, other.providerName)
 				&& Objects.equals(technologyLevel, other.technologyLevel) && Objects.equals(validFrom, other.validFrom)
@@ -204,7 +194,7 @@ public class Provider implements Serializable {
 		return "Provider [providerId=" + providerId + ", providerName=" + providerName + ", domains=" + domains
 				+ ", address=" + address + ", existsSince=" + existsSince + ", validFrom=" + validFrom + ", validUntil="
 				+ validUntil + ", experienceLevel=" + experienceLevel + ", technologyLevel=" + technologyLevel
-				+ ", price=" + price + ", masterAgreementTypeId=" + masterAgreementTypeId + "]";
+				+ ", price=" + price + "]";
 	}
 	
 	
