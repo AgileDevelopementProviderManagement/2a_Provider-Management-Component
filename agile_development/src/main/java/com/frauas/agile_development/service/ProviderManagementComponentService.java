@@ -1,11 +1,9 @@
 package com.frauas.agile_development.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.frauas.agile_development.model.MasterAgreementType;
-import com.frauas.agile_development.model.Offer;
+import com.frauas.agile_development.model.OfferRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,7 @@ public class ProviderManagementComponentService {
 		return providerRepository.findById(id).orElse(null);
 	}
 
-    public Provider updateProviderWithMasterAgreement(int id, Offer updatedproviderinoffer)throws Exception{
+    public Provider updateProviderWithMasterAgreement(int id, OfferRole updatedproviderinoffer)throws Exception{
 		Optional<Provider> isInDb = providerRepository.findById(id);
 
 
@@ -39,8 +37,8 @@ public class ProviderManagementComponentService {
 
 			//TODO add price to the provider looping the offer price of role
 			// newProvider.getDomains().get(0).getRoles().get(0).setRoleprice();
-			newProvider.setMasterAgreementTypeId(updatedproviderinoffer.getOffermasterids());
-			newProvider.setOfferestablished(true);
+			//newProvider.setMasterAgreementTypeId(updatedproviderinoffer.getOffermasterids());
+			newProvider.setAccepted("accepted");
 
 			return providerRepository.save(newProvider);
 		}
