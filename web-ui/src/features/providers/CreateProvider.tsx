@@ -19,6 +19,7 @@ import { useAxios } from "../../app-providers/AxiosProvider";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { MasterAgreementType } from "../master-agreements/types";
+import { useAuth } from "../../app-providers/AuthProvider";
 
 type FlattenedDomain = {
   domain: Domain;
@@ -136,7 +137,8 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
   const [techCats, setTechCats] = useState<string[]>([]);
   const [masterAgreements, setMasterAgreement] = useState<
     MasterAgreementType[]
-  >([]);
+    >([]);
+    const { userData } = useAuth();
 
   const handleSave = () => {
     const formValue = getValues();
@@ -149,6 +151,8 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
       masterAgreementTypeId: formValue.masterAgreementTypeId.map((m) =>
         Number(m.masterAgreementTypeId)
       ),
+      userName: userData.username,
+      userType: userData.userType,
       experienceLevel: formValue.experienceLevel,
       technologyLevel: formValue.technologyLevel,
       price: 0,

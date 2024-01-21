@@ -11,5 +11,7 @@ export type ProviderType = {
   experienceLevel: string;
   technologyLevel: string;
   price: number;
+  userName: string;
+  userType: string;
   domains: Domain[];
 };

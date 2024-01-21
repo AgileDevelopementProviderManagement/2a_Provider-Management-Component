@@ -97,7 +97,7 @@ const columns: readonly Column[] = [
       <Box display="flex" gap={1}>
         {agreementIds?.map((agreementId) => {
           return (
-            <Chip label={agm.get(String(agreementId))} />
+            <Chip key={agreementId} label={agm.get(String(agreementId))} />
           );
         })}
       </Box>
@@ -208,7 +208,7 @@ const Providers: FunctionComponent = () => {
       </Box>
 
       <Paper sx={{ width: "100%", overflow: "hidden", padding: 1 }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{  maxHeight: "50vh" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

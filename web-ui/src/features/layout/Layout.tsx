@@ -3,8 +3,10 @@ import {
   AppBar,
   Box,
   IconButton,
+  Link,
   Menu,
   MenuItem,
+  Theme,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -14,13 +16,19 @@ import {
   PropsWithChildren,
   useState,
 } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, NavLink as RouterLink } from "react-router-dom";
 import { useAuth } from "../../app-providers/AuthProvider";
+
+const linkStyle = (theme: Theme) => ({
+  color: theme.palette.common.white,
+  display: "block",
+});
 
 const Layout: FunctionComponent<PropsWithChildren> = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { userData, logout } = useAuth();
+
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -41,6 +49,7 @@ const Layout: FunctionComponent<PropsWithChildren> = () => {
 
   const menuId = "primary-search-account-menu";
   const isMenuOpen = Boolean(anchorEl);
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -74,15 +83,39 @@ const Layout: FunctionComponent<PropsWithChildren> = () => {
           <Toolbar>
             <Typography
               onClick={() => handleCardClick("/")}
-              variant="h6"
               component="div"
               sx={{
-                flexGrow: 1,
                 fontWeight: "bold",
               }}
             >
               Provider Management Platform
             </Typography>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                ml: 4,
+                justifyContent: "flex-start",
+                gap: 4,
+              }}
+            >
+              <Link component={RouterLink} to="/" sx={linkStyle}>
+                Home
+              </Link>
+              <Link
+                component={RouterLink}
+                to="/masteragreements"
+                sx={linkStyle}
+              >
+                Agreements
+              </Link>
+              <Link component={RouterLink} to="/providers" sx={linkStyle}>
+                Providers
+              </Link>
+              <Link component={RouterLink} to="/offers" sx={linkStyle}>
+                Offers
+              </Link>
+            </Box>
             <IconButton
               size="large"
               edge="end"

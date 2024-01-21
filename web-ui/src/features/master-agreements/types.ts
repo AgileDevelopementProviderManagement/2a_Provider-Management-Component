@@ -8,6 +8,8 @@ export type MasterAgreementType = {
   dailyrateIndicator: string;
   deadline: string;
   teamdeadline: string;
+  userName: string;
+  userType: string;
   workscontractdeadline: string;
   domains: Domain[];
 };
