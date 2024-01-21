@@ -24,7 +24,7 @@ const getUserData = () => {
     return DEFAULT_USER;
   }
   const user = localStorage.getItem("user");
-  return user ? { ...JSON.parse(user).user, userType: "Admin" } : null;
+  return user ? { ...JSON.parse(user)["user-account-details"], userType: "Admin" } : null;
 }
 
 export const AuthProvider: FunctionComponent<PropsWithChildren> = ({
