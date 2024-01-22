@@ -35,7 +35,7 @@ public class OfferService {
             for (OfferProvider provider : providers) {
                 if (offerId.equals(provider.getOfferId())) {
                     // Update the isAccepted field
-                    provider.setAccepted(modifiedOfferRole.getProvider().get(0).getAccepted());
+                    provider.setAccepted(true);
                     if (null!=rating)
                     provider.setOfferProRating(rating);
                     break;
