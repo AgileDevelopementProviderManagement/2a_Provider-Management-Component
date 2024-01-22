@@ -7,9 +7,11 @@ export type ProviderType = {
   address: string;
   validFrom: string;
   validUntil: string;
-  masterAgreementTypeId: number[],
+  isAccepted: string;
   experienceLevel: string;
   technologyLevel: string;
   price: number;
+  userName: string;
+  userType: string;
   domains: Domain[];
 };

@@ -179,7 +179,7 @@ const MasterAgreement: FunctionComponent = () => {
         </Button>
       </Box>
       <Paper sx={{ width: "100%", overflow: "hidden", padding: 1 }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{  maxHeight: "50vh" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

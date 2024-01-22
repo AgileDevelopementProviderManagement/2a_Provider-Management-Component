@@ -15,7 +15,7 @@ export const AxiosProvider: FunctionComponent<PropsWithChildren> = ({
 }) => {
   const axiosInstance = useRef(
     axios.create({
-      baseURL: "http://ec2-16-171-169-38.eu-north-1.compute.amazonaws.com:5000/api/",
+      baseURL: import.meta.env.VITE_REST_API_URL,
       timeout: 1000000,
       headers: { "Content-Type": "application/json" }
     })

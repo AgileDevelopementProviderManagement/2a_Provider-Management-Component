@@ -111,7 +111,6 @@ const Login = () => {
           sx={{ mb: 4 }}
           disabled={!isValid}
           color="primary"
-          loadingPosition="start"
           loading={loading}
           variant="contained"
           style={btnstyle}
@@ -123,7 +122,7 @@ const Login = () => {
         <Typography mb={2}>
           {" "}
           Do you have an account ?{" "}
-          <Link href="https://codexauth.onrender.com/register/">Sign Up</Link>
+          <Link href="https://codexauthv2.onrender.com/register/" target="_blank">Sign Up</Link>
         </Typography>
 
         {loginError && (

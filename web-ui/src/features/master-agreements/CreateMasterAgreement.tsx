@@ -13,6 +13,7 @@ import { useAxios } from "../../app-providers/AxiosProvider";
 import { Domain, Role, StandardDomain } from "../../types";
 import { MasterAgreementType } from "./types";
 import dayjs from "dayjs";
+import { useAuth } from "../../app-providers/AuthProvider";
 
 type FlattenedDomain = {
   domain: Domain;
@@ -125,6 +126,7 @@ const CreateMasterAgreement: FunctionComponent<CreateMasterAgreementProps> = ({
   const [domains, setDomains] = useState<StandardDomain[]>([]);
   const [experienceLevels, setExperienceLevel] = useState<string[]>([]);
   const [techCats, setTechCats] = useState<string[]>([]);
+  const { userData } = useAuth();
 
   const handleSave = () => {
     const formValue = getValues();
@@ -136,6 +138,8 @@ const CreateMasterAgreement: FunctionComponent<CreateMasterAgreementProps> = ({
       deadline: formValue.deadline.format(dateFormat),
       teamdeadline: formValue.teamdeadline.format(dateFormat),
       workscontractdeadline: formValue.workscontractdeadline.format(dateFormat),
+      userName: userData.username,
+      userType: userData.userType,
       domains: getGroupedDomains(formValue.domains),
     };
     onSave(payload);

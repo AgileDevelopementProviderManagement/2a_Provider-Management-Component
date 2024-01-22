@@ -4,13 +4,18 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
   Typography,
 } from "@mui/material";
-import { Fragment, FunctionComponent } from "react";
+import { Fragment, FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import HandymanIcon from "@mui/icons-material/Handyman";
-import GavelIcon from '@mui/icons-material/Gavel';
+import GavelIcon from "@mui/icons-material/Gavel";
+import { MasterAgreementType } from "../master-agreements/types";
+import { ProviderType } from "../providers/types";
+import { useAxios } from "../../app-providers/AxiosProvider";
+import { Offer } from "../offers/types";
 
 const Home: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -18,6 +23,23 @@ const Home: FunctionComponent = () => {
   const handleCardClick = (to: string) => {
     navigate(to);
   };
+
+  const [mats, setMats] = useState<MasterAgreementType[]>([]);
+  const [providers, setProviders] = useState<ProviderType[]>([]);
+  const [offers, setOffers] = useState<Offer["provider"]>([]);
+  const axios = useAxios();
+
+  useEffect(() => {
+    axios.get("/mastertype/all").then(({ data }) => setMats(data));
+    axios.get("/providers").then(({ data }) => setProviders(data));
+    axios.get("/getAlloffers").then(({ data } : {data: Offer[]}) => {
+      const providers = data.reduce((acc, item) => {
+        acc.push(...item.provider)
+        return acc;
+      }, [] as Offer["provider"])
+      setOffers(providers);
+    });
+  }, [axios]);
 
   return (
     <Fragment>
@@ -43,8 +65,14 @@ const Home: FunctionComponent = () => {
               <HandshakeIcon fontSize={"inherit"} />
             </CardMedia>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div" textAlign="center">
-                Master Agreements
+             
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                textAlign="center"
+              >
+                Master Agreements  <Chip label={mats?.length} color="info"/>
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -64,8 +92,13 @@ const Home: FunctionComponent = () => {
               <HandymanIcon fontSize={"inherit"} />
             </CardMedia>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div" textAlign="center">
-                Providers
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                textAlign="center"
+              >
+                Providers  <Chip label={providers?.length} color="info"/>
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -85,8 +118,13 @@ const Home: FunctionComponent = () => {
               <GavelIcon fontSize={"inherit"} />
             </CardMedia>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div" textAlign="center">
-                Offers
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                textAlign="center"
+              >
+                Offers <Chip label={offers?.length} color="info"/>
               </Typography>
             </CardContent>
           </CardActionArea>
