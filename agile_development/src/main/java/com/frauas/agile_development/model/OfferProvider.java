@@ -26,23 +26,21 @@ public class OfferProvider {
     @JsonProperty("isAccepted")
     private Boolean isAccepted;
 
+    private String offerProRating;
     @JsonProperty("cycle")
     private Integer cycle;
 
-    public OfferProvider(int id, String offerId, String name, Integer quotePrice, Boolean isAccepted, int cycle) {
+    public OfferProvider(int id, String offerId, String name, Integer quotePrice, Boolean isAccepted, int cycle, String offerProRating) {
         this.id = id;
         this.offerId = offerId;
         this.name = name;
         this.quotePrice = quotePrice;
         this.isAccepted = isAccepted;
         this.cycle = cycle;
+        this.offerProRating=offerProRating;
     }
 
     public OfferProvider() {
-    }
-
-    public String getOfferId() {
-        return offerId;
     }
 
     public Boolean getAccepted() {
@@ -52,6 +50,19 @@ public class OfferProvider {
     public void setAccepted(Boolean accepted) {
         isAccepted = accepted;
     }
+
+    public String getOfferProRating() {
+        return offerProRating;
+    }
+
+    public void setOfferProRating(String offerProRating) {
+        this.offerProRating = offerProRating;
+    }
+
+    public String getOfferId() {
+        return offerId;
+    }
+
 
     public void setOfferId(String offerId) {
         this.offerId = offerId;

@@ -24,6 +24,29 @@ public class OfferService {
     public OfferRole saveOffer(OfferRole offer) {
         return offerRepository.save(offer);
     }
+    public OfferRole updateOfferDetails(String offerId, OfferRole modifiedOfferRole,String rating) throws Exception{
+        Optional<OfferRole> isInDb = offerRepository.findByProviderOfferId(offerId);
+
+        if (isInDb.isPresent()) {
+            OfferRole existingOffer = isInDb.get();
+            List<OfferProvider> providers = existingOffer.getProvider();
+
+            // Looping in  the unique provider with the matching offerId
+            for (OfferProvider provider : providers) {
+                if (offerId.equals(provider.getOfferId())) {
+                    // Update the isAccepted field
+                    provider.setAccepted(modifiedOfferRole.getProvider().get(0).getAccepted());
+                    if (null!=rating)
+                    provider.setOfferProRating(rating);
+                    break;
+                }
+            }
+            // Save the updated OfferRole
+            return offerRepository.save(existingOffer);
+        }else {
+            return null;
+        }
+    }
 
     public List<OfferRole> saveAllOffer(List<OfferRole> offerRoles) {
         return offerRepository.saveAll(offerRoles);
@@ -137,5 +160,24 @@ public class OfferService {
 
         return prices.isEmpty() ? 0 : (double) sum / prices.size();
     }
+
+
+public static void postAcceptOfferTo3a(String offerId){
+    String apiUrl = "https://agiledev3a.pythonanywhere.com/p3aplatform/api/post_ma_offer_response";
+    String isAccepted = "True";
+    String requestUrl = String.format("%s?offerId=%s&isAccepted=%s", apiUrl, offerId, isAccepted);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+
+
+    RestTemplate restTemplate = new RestTemplate();
+    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+    // POST request
+    ResponseEntity<String> responseEntity = restTemplate.postForEntity(requestUrl, requestEntity, String.class);
+    // Verifiying Response
+    System.out.println("Response: " + responseEntity.getBody());
+}
 
 }

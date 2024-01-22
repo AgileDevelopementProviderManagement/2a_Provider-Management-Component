@@ -30,6 +30,8 @@ public class Provider implements Serializable {
     private String technologyLevel;
     private Float price;
 
+	private String providerRating;
+
 
 	private String isAccepted;
 
@@ -59,6 +61,14 @@ public class Provider implements Serializable {
 		this.isAccepted = isAccepted;
 		this.userName = userName;
 		this.userType = userType;
+	}
+
+	public String getProviderRating() {
+		return providerRating;
+	}
+
+	public void setProviderRating(String providerRating) {
+		this.providerRating = providerRating;
 	}
 
 	public Integer getProviderId() {
@@ -141,7 +151,7 @@ public class Provider implements Serializable {
 		this.price = price;
 	}
 
-	public String isAccepted() {
+	public String getIsAccepted() {
 		return isAccepted;
 	}
 
