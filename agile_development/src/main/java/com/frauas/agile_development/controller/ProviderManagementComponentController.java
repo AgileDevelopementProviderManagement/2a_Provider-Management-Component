@@ -3,22 +3,13 @@ package com.frauas.agile_development.controller;
 import java.util.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frauas.agile_development.model.*;
 import com.frauas.agile_development.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api")
@@ -134,19 +125,19 @@ public class ProviderManagementComponentController {
         }
     }
 
-    @PutMapping("/linkmasterwithtoffer/{id}")
+/*    @PutMapping("/linkmasterwithtoffer/{id}")
     public ResponseEntity<MasterAgreementType> updateMasterAgreementOffer(
             @PathVariable int id,
             @RequestBody MasterAgreementType updatedMasterAgreement) throws Exception {
 
-        MasterAgreementType updated = masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedFlags(id);
+        MasterAgreementType updated = masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedProviders(id);
 
         if (updated != null) {
             return new ResponseEntity<>(updated, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
     @DeleteMapping(value = "/deletemastertype")
     public ResponseEntity<Void> removeMasterAgreement(@RequestParam("id") int id) {
@@ -160,11 +151,21 @@ public class ProviderManagementComponentController {
         }
     }
 
-    @PostMapping("/saveoffer")
-    public ResponseEntity<OfferRole> addOffer(@RequestBody OfferRole offerRole, @RequestParam("masterid") int mid, @RequestParam("providerid") int pid) throws Exception {
-        MasterAgreementType updated = masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedFlags(mid);
-        providerManagementComponentService.updateProviderWithMasterAgreement(pid, offerRole);
-        OfferRole savedOffer = offerService.saveOffer(new OfferRole());
+    @PutMapping("/saveofferdetails")
+    public ResponseEntity<OfferRole> modifyOffer(@RequestBody OfferRole offerRole,
+                                              @RequestParam("masterid") int mid,
+                                              @RequestParam("providername") String pname,
+                                                 @RequestParam (value= "rating",required = false) String rating,
+                                              @RequestParam ("offerid") String offerId) throws Exception {
+
+        OfferRole savedOffer = offerService.updateOfferDetails(offerId, offerRole,rating);
+
+        offerService.postAcceptOfferTo3a(offerId);
+
+        //Consequently update the corresponding  master agreemnet type  with the provider name details in role
+        MasterAgreementType updated = masterAgreementTypeServiceImpl.updateMasterAgreementWithOfferedProviders(mid,pname);
+        providerManagementComponentService.updateProviderAfterOffered(pname, offerRole,rating);
+
         return new ResponseEntity<>(savedOffer, HttpStatus.OK);
     }
 
