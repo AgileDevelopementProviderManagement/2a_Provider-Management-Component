@@ -20,7 +20,7 @@ public class MasterAgreementType {
     private String teamdeadline;
     private String workscontractdeadline;
     private String isAccepted;
-    private List<Integer> providerId;
+    private List<String> providerNames;
     private String userName;
     private String userType;
 
@@ -47,7 +47,7 @@ public class MasterAgreementType {
         this.isAccepted = isAccepted;
         this.userName = userName;
         this.userType = userType;
-
+        this.providerNames=offeredProviderList;
     }
 
     public List<Domain> getDomains() {
@@ -138,12 +138,12 @@ public class MasterAgreementType {
         this.userType = userType;
     }
 
-    public List<Integer> getProviderId() {
-        return providerId;
+    public List<String> getProviderNames() {
+        return providerNames;
     }
 
-    public void setProviderId(List<Integer> providerId) {
-        this.providerId = providerId;
+    public void setProviderNames(List<String> providerNames) {
+        this.providerNames = providerNames;
     }
 
     public String getIsAccepted() {
