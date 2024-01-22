@@ -125,6 +125,7 @@ public class OfferRole implements Serializable {
 		this.technologiesCatalog = technologiesCatalog;
 	}
 
+
 	@Override
 	public String toString() {
 		return "OfferRole{" +

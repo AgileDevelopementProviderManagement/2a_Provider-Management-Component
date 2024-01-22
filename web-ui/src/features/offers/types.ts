@@ -7,11 +7,27 @@ export type Offer = {
   domainName: string;
   masterAgreementTypeId: number;
   masterAgreementTypeName: string;
-  provider: {
-    id: number;
-    offerId: string;
-    name: string;
-    quotePrice: number;
-    cycle: number;
-  }[];
+  provider: OfferProvider[];
 };
+
+
+export enum Action {
+  ACCPET = "ACCEPT",
+  REJECT = "REJECT",
+}
+
+export type OfferProvider = {
+  id: number;
+  offerId: string;
+  name: string;
+  quotePrice: number;
+  isAccepted?: boolean;
+  cycle: number;
+}
+
+export type OfferPayload = {
+  provider: OfferProvider;
+  offer: Offer;
+  rating?: number;
+  action: Action;
+}

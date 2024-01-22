@@ -6,6 +6,7 @@ import {
   Dialog,
   IconButton,
   Paper,
+  Rating,
   Slide,
   Table,
   TableBody,
@@ -89,25 +90,13 @@ const columns: readonly Column[] = [
     align: "left",
   },
   {
-    id: "masterAgreementTypeId",
-    label: "Master Agreements",
+    id: "providerRating",
+    label: "Rating",
     minWidth: 170,
     align: "left",
-    format: (agreementIds: number[], agm: Map<string, string>) => (
-      <Box display="flex" gap={1}>
-        {agreementIds?.map((agreementId) => {
-          return (
-            <Chip key={agreementId} label={agm.get(String(agreementId))} />
-          );
-        })}
-      </Box>
+    format: (rating: string) => (
+      <Rating value={Number(rating)} readOnly/>
     ),
-  },
-  {
-    id: "price",
-    label: "Price",
-    minWidth: 170,
-    align: "right",
   },
   {
     id: "validFrom",

@@ -123,7 +123,7 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
       validFrom: dayjs(),
       validUntil: dayjs(),
       address: "",
-      masterAgreementTypeId: [] as MasterAgreementType[],
+      isAccepted: "false",
       experienceLevel: "",
       technologyLevel: "",
       price: 0,
@@ -135,10 +135,7 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
   const [domains, setDomains] = useState<StandardDomain[]>([]);
   const [experienceLevels, setExperienceLevel] = useState<string[]>([]);
   const [techCats, setTechCats] = useState<string[]>([]);
-  const [masterAgreements, setMasterAgreement] = useState<
-    MasterAgreementType[]
-    >([]);
-    const { userData } = useAuth();
+  const { userData } = useAuth();
 
   const handleSave = () => {
     const formValue = getValues();
@@ -148,10 +145,8 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
       validFrom: formValue.validFrom.format(dateFormat),
       validUntil: formValue.validUntil.format(dateFormat),
       address: formValue.address,
-      masterAgreementTypeId: formValue.masterAgreementTypeId.map((m) =>
-        Number(m.masterAgreementTypeId)
-      ),
       userName: userData.username,
+      isAccepted: "false",
       userType: userData.userType,
       experienceLevel: formValue.experienceLevel,
       technologyLevel: formValue.technologyLevel,
@@ -161,9 +156,6 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
     onSave(payload);
   };
 
-  useEffect(() => {
-    axios.get("/mastertype/all").then(({ data }) => setMasterAgreement(data));
-  }, [axios]);
 
   useEffect(() => {
     axios.get("/domains").then(({ data }) => setDomains(data));
@@ -212,41 +204,6 @@ const CreateProvider: FunctionComponent<CreateProviderProps> = ({
           />
         )}
       />
-      <Controller
-        name="masterAgreementTypeId"
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value, ref } }) => (
-          <Autocomplete
-            multiple
-            id="master-agreement-type-id"
-            autoHighlight
-            options={masterAgreements}
-            ref={ref}
-            onChange={(_, item) => onChange(item)}
-            value={value}
-            isOptionEqualToValue={(option, value) =>
-              option.masterAgreementTypeId === value.masterAgreementTypeId
-            }
-            getOptionKey={(option) => option.masterAgreementTypeId || ""}
-            getOptionLabel={(option) => option.masterAgreementTypeName || ""}
-            renderOption={(props, option) => (
-              <Box component="li" {...props}>
-                {option.masterAgreementTypeName}
-              </Box>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Master Agreements"
-                placeholder="Master Agreements"
-              />
-            )}
-            sx={{ width: "100%", height: "100%" }}
-          />
-        )}
-      />
-
       <Controller
         name="domains"
         control={control}
