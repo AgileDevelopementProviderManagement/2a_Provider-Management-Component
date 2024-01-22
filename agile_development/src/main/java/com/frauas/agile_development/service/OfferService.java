@@ -49,21 +49,21 @@ public class OfferService {
     }
 
     public List<OfferRole> saveAllOffer(List<OfferRole> offerRoles) {
-        final List<OfferRole> existing = offerRepository.findAll();
-        existing.forEach((item) -> {
-            offerRoles.stream()
+      final List<OfferRole> existing = offerRepository.findAll();
+      existing.forEach((item) -> {
+        offerRoles.stream()
             .filter((o) -> {
-									return o.getDomainName().equals(item.getDomainName())
-									&& o.getRoleName().equals(item.getRoleName())
-									&& o.getExperienceLevel().equals(item.getExperienceLevel())
-									&& o.getDomainName().equals(item.getDomainName())
-									&& o.getTechnologiesCatalog().equals(item.getTechnologiesCatalog())
-									&& o.getMasterAgreementTypeId().equals(item.getMasterAgreementTypeId());
-							})
-						.findFirst()
+              return o.getDomainName().equals(item.getDomainName())
+                  && o.getRoleName().equals(item.getRoleName())
+                  && o.getExperienceLevel().equals(item.getExperienceLevel())
+                  && o.getDomainName().equals(item.getDomainName())
+                  && o.getTechnologiesCatalog().equals(item.getTechnologiesCatalog())
+                  && o.getMasterAgreementTypeId().equals(item.getMasterAgreementTypeId());
+            })
+            .findFirst()
             .ifPresent(o -> o.setId(item.getId()));
-        });
-        return offerRepository.saveAll(offerRoles);
+      });
+      return offerRepository.saveAll(offerRoles);
     }
 
     public List<OfferRole> getallOffers() {
