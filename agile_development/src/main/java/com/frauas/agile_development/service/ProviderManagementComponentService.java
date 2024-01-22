@@ -28,8 +28,11 @@ public class ProviderManagementComponentService {
 		return providerRepository.findById(id).orElse(null);
 	}
 
-    public Provider updateProviderWithMasterAgreement(int id, OfferRole updatedproviderinoffer)throws Exception{
-		Optional<Provider> isInDb = providerRepository.findById(id);
+    public Provider updateProviderAfterOffered(String pname, OfferRole updatedoffer,String rating)throws Exception{
+
+		String roleName = updatedoffer.getRoleName();
+		Integer domainId = updatedoffer.getDomainId();
+		Optional<Provider> isInDb = providerRepository.findByProviderNameAndDomainIdAndRoleName(pname,String.valueOf(domainId),roleName);
 
 
 		if (isInDb.isPresent()) {
@@ -39,6 +42,8 @@ public class ProviderManagementComponentService {
 			// newProvider.getDomains().get(0).getRoles().get(0).setRoleprice();
 			//newProvider.setMasterAgreementTypeId(updatedproviderinoffer.getOffermasterids());
 			newProvider.setAccepted("accepted");
+			if (null!=rating)
+			newProvider.setProviderRating(rating);
 
 			return providerRepository.save(newProvider);
 		}
@@ -51,7 +56,7 @@ public class ProviderManagementComponentService {
 		Optional<Provider> isInDb = providerRepository.findById(id);
 		if (isInDb.isPresent()) {
 			Provider newProvider = isInDb.get();
-//TODO if required to implementthe API
+
 			return providerRepository.save(newProvider);
 		}
 		else {

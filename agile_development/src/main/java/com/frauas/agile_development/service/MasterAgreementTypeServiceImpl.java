@@ -1,11 +1,14 @@
 package com.frauas.agile_development.service;
 
 import com.frauas.agile_development.model.MasterAgreementType;
+import com.frauas.agile_development.model.OfferRole;
 import com.frauas.agile_development.repository.MasterAgreementTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,13 +51,22 @@ public class MasterAgreementTypeServiceImpl implements MasterAgreementTypeServic
     }
 
 
-    public MasterAgreementType updateMasterAgreementWithOfferedFlags(int id) throws MasterAgreeTypeNotFoundException{
-        Optional<MasterAgreementType> isInDb = masterAgreementTypeRepository.findById(id);
+    public MasterAgreementType updateMasterAgreementWithOfferedProviders(int mid, String  pname) throws MasterAgreeTypeNotFoundException{
+        Optional<MasterAgreementType> isInDb = masterAgreementTypeRepository.findById(mid);
 
         if (isInDb.isPresent()) {
             MasterAgreementType newMAT = isInDb.get();
 
             newMAT.setIsAccepted("Accepted");
+            if (newMAT.getProviderNames() == null) {
+                // If the list is null, create a new list and add the item
+                List<String> newProviderNamesList = new ArrayList<>();
+                newProviderNamesList.add(pname);
+                newMAT.setProviderNames(newProviderNamesList);
+            } else {
+                // If the list is not null, add the item to the existing list
+                Objects.requireNonNull(newMAT.getProviderNames()).add(pname);
+            }
 
             return masterAgreementTypeRepository.save(newMAT);
         }
