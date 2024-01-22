@@ -56,7 +56,6 @@ public class OfferService {
               return o.getDomainName().equals(item.getDomainName())
                   && o.getRoleName().equals(item.getRoleName())
                   && o.getExperienceLevel().equals(item.getExperienceLevel())
-                  && o.getDomainName().equals(item.getDomainName())
                   && o.getTechnologiesCatalog().equals(item.getTechnologiesCatalog())
                   && o.getMasterAgreementTypeId().equals(item.getMasterAgreementTypeId());
             })
