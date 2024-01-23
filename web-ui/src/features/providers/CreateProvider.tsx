@@ -18,7 +18,6 @@ import {
 import { useAxios } from "../../app-providers/AxiosProvider";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
-import { MasterAgreementType } from "../master-agreements/types";
 import { useAuth } from "../../app-providers/AuthProvider";
 
 type FlattenedDomain = {
