@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Chip,
@@ -8,6 +9,8 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  List,
+  ListItem,
   Paper,
   Rating,
   Table,
@@ -378,11 +381,22 @@ const Offers: FunctionComponent = () => {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Rating
-            value={payload?.rating || 0}
-            size="large"
-            onChange={addRating}
-          />
+          <Alert severity="info" component="div" sx={{ mb: 2 }}>
+            <Typography component="span" ml={1}>
+              Please rate the provider based on
+            </Typography>
+            <List component="ol" sx={{ listStyle: "decimal", pl: 4 }} disablePadding>
+              <ListItem sx={{ display: "list-item"}} disablePadding>Best price offered</ListItem>
+              <ListItem sx={{ display: "list-item"}} disablePadding>Maximum roles provided</ListItem>
+            </List>
+          </Alert>
+          <Box display="flex" justifyContent="center">
+            <Rating
+              value={payload?.rating || 0}
+              size="large"
+              onChange={addRating}
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button
