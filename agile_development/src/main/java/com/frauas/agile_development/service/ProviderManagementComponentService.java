@@ -63,4 +63,8 @@ public class ProviderManagementComponentService {
 			return null;
 		}
 	}
+
+	public void deleteProvider(int id) {
+		providerRepository.deleteById(id);
+	}
 }

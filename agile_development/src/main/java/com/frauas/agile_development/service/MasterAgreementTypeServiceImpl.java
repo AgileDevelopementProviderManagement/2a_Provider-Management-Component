@@ -42,6 +42,9 @@ public class MasterAgreementTypeServiceImpl implements MasterAgreementTypeServic
             newMAT.setMasterAgreementTypeName(updatedMasterAgreement.getMasterAgreementTypeName());
             newMAT.setValidFrom(updatedMasterAgreement.getValidFrom());
             newMAT.setValidUntil(updatedMasterAgreement.getValidUntil());
+            newMAT.setDeadline(updatedMasterAgreement.getDeadline());
+            newMAT.setTeamdeadline(updatedMasterAgreement.getTeamdeadline());
+            newMAT.setWorkscontractdeadline(updatedMasterAgreement.getWorkscontractdeadline());
             return masterAgreementTypeRepository.save(newMAT);
         }
         else {
