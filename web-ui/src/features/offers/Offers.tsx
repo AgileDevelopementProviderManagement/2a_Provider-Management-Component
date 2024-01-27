@@ -177,7 +177,7 @@ const Row = (props: {
                       </TableHead>
                       <TableBody>
                         {providers
-                          .sort((a, b) => b.quotePrice - a.quotePrice)
+                          .sort((a, b) => (+a.quotePrice) - (+b.quotePrice))
                           .map((r) => {
                             return (
                               <TableRow key={r.id}>
